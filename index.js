@@ -9,7 +9,8 @@ const commands = ["pause", "play", "src", "loop", "pause", "vol"];
 function p(s) { return prefix + s }
 
 function n(s) {
-    powercord.api.notices.sendToast("notif", {
+    let random = prefix + "-" + (Math.random() + 1).toString(36).substring(7);
+    powercord.api.notices.sendToast(random, {
         header: "background-player",
         content: s,
         timeout: 3e3,
