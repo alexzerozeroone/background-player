@@ -8,25 +8,80 @@ const commands = ["pause", "play", "src", "loop", "pause", "vol"];
 
 function p(s) { return prefix + s }
 
-function n(s) {
+function n(s, t = 3e3) {
     let random = prefix + "-" + (Math.random() + 1).toString(36).substring(7);
     powercord.api.notices.sendToast(random, {
         header: "background-player",
         content: s,
-        timeout: 3e3,
+        timeout: t,
     });
 }
 
-module.exports = class AlexsBadPlugin extends Plugin {
+module.exports = class BackgroundPlayer extends Plugin {
     async startPlugin() {
+        /*
+         * wip
+         */
+
+        // powercord.api.commands.registerCommand({
+        //     command: p("queue"),
+        //     description: "Queue songs",
+        //     usage: "{c} [url/s]",
+        //     executor: (args) => {
+        //         if (args[0]) {
+        //             for (var i = 0; i < args.length; i++) {
+        //                 playing.push(args[0]);
+        //                 var filename = args[0].split("/").pop().split("#")[0].split("?")[0];
+        //                 n("Added to queue: " + filename, 15e2);
+        //             }
+        //         } else {
+        //             n("No URLs provided");
+        //         }
+        //     }
+        // });
+
+        // powercord.api.commands.registerCommand({
+        //     command: p("playqueue"),
+        //     description: "Play the queue",
+        //     usage: "{c}",
+        //     executor: () => {
+        //         if (playing.length > 0) {
+        //             for (var i = 0; i < playing.length; i++) {
+        //                 playing.shift();
+        //                 playing[i].play();
+
+        //                 setTimeout(() => {
+        //                     this.play(playing[i + 1]);
+        //                 }, playing[i].duration * 1e3);
+        //             }
+        //         } else {
+        //             n("Queue is empty");
+        //         }
+        //     }
+        // });
+
+        // powercord.api.commands.registerCommand({
+        //     command: p("pausequeue"),
+        //     description: "Pause the queue",
+        //     usage: "{c}",
+        //     executor: () => {
+        //         if (playing.length > 0) {
+        //             playing.shift();
+        //             playing.pause();
+        //         } else {
+        //             n("Queue is empty");
+        //         }
+        //     }
+        // });
+
         powercord.api.commands.registerCommand({
             command: p("play"),
             description: "Play file in background by link.",
             usage: "{c} <file>",
             executor: (args) => {
-                if (args.length > 0) {
+                for (var i = 0; i < args.length; i++) {
                     var audio = new Audio(args[0]);
-                    audio.volume = 0.5;
+                    audio.volume = 0.3;
 
                     if (loop) {
                         audio.loop = true;
@@ -37,14 +92,6 @@ module.exports = class AlexsBadPlugin extends Plugin {
 
                     var filename = playing.src.split("/").pop().split("#")[0].split("?")[0];
                     n("Playing " + filename + " at volume " + audio.volume);
-                } else {
-                    if (typeof playing == "object") {
-                        playing.play();
-                        var filename = playing.src.split("/").pop().split("#")[0].split("?")[0];
-                        n("Played " + filename);
-                    }
-
-                    n("No file currently playing.");
                 }
             }
         });

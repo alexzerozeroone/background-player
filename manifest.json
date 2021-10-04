@@ -1,6 +1,6 @@
 {
     "name": "Background Player",
-    "version": "0.2.2",
+    "version": "0.2.3",
     "description": "Play video files/audio files in the background",
     "author": "alexzerozeroone",
     "license": "MIT"
